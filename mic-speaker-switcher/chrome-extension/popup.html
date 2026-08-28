@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    :root {
+      --bg: #8F4A48; --bg-highlight: #A6716F; --bg-shadow: #5A2C2B;
+      --gold: #FBCA03; --red: #AA0505;
+      --text-primary: #FBF0DA; --text-secondary: #F0D9A6; --text-dim: #CFA46B;
+      --shadow-out: 6px 6px 12px var(--bg-shadow), -6px -6px 12px var(--bg-highlight);
+      --shadow-in: inset 4px 4px 8px var(--bg-shadow), inset -4px -4px 8px var(--bg-highlight);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; width: 240px; padding: 18px;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg); color: var(--text-primary);
+    }
+    h1 { font-size: 14px; margin: 0 0 12px; text-align: center; }
+    #status-line { font-size: 12px; color: var(--text-secondary); text-align: center; margin-bottom: 14px; min-height: 16px; }
+    button {
+      width: 100%; border: none; border-radius: 12px; padding: 11px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      background: var(--bg); color: var(--gold); box-shadow: var(--shadow-out);
+      margin-bottom: 8px;
+    }
+    button:active { box-shadow: var(--shadow-in); }
+    button:disabled { opacity: 0.5; cursor: default; }
+    button.active { color: var(--text-secondary); box-shadow: var(--shadow-in); cursor: default; }
+    #offline-msg { font-size: 11px; color: var(--red); text-align: center; margin-top: 10px; display: none; }
+  </style>
+</head>
+<body>
+  <h1>Headset Switch</h1>
+  <div id="status-line">Checking…</div>
+  <div id="headset-buttons"></div>
+  <div id="offline-msg">Desktop app isn't running.</div>
+  <script src="popup.js"></script>
+</body>
+</html>

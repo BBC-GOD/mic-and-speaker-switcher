@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Headset Switch</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Custom titlebar: the window is frameless, so this replaces the OS
+       titlebar entirely - drag region + our own minimize/close buttons,
+       themed to match the app instead of showing a white OS bar. -->
+  <div class="titlebar">
+    <span class="titlebar-title">Headset Switch</span>
+    <div class="titlebar-btns">
+      <button id="min-btn" class="titlebar-btn" aria-label="Minimize">&#8211;</button>
+      <button id="close-btn" class="titlebar-btn titlebar-btn-close" aria-label="Close">&times;</button>
+    </div>
+  </div>
+
+  <!-- ============ INSTALL PROMPT (first run, module missing) ============ -->
+  <div class="app-content">
+  <section id="install-screen" class="screen hidden">
+    <div class="card">
+      <h1 class="title">One-time setup</h1>
+      <p class="body-text">
+        Headset Switch needs a small, open-source Windows helper
+        (<em>AudioDeviceCmdlets</em>) to change your default audio device.
+      </p>
+      <button id="install-btn" class="btn-raised btn-primary">Install helper</button>
+      <p id="install-status" class="hint"></p>
+    </div>
+  </section>
+
+  <!-- ============ SETUP SCREEN (assign your headsets) ============ -->
+  <section id="setup-screen" class="screen hidden">
+    <div class="card setup-card">
+      <h1 class="title">Set up your headsets</h1>
+      <p class="body-text">Pick the speaker and mic for each headset. Add as many as you use.</p>
+
+      <div id="headset-list" class="headset-list"></div>
+
+      <button id="add-headset-btn" class="btn-raised">+ Add headset</button>
+      <button id="save-setup-btn" class="btn-raised btn-primary">Save</button>
+      <p id="setup-status" class="hint"></p>
+    </div>
+  </section>
+
+  <!-- Template for one headset block, cloned by app.js -->
+  <template id="headset-block-template">
+    <div class="headset-block">
+      <div class="block-label-row">
+        <span class="block-label"><span class="dot"></span><span class="block-label-text">Headset</span></span>
+        <button type="button" class="remove-headset-btn" title="Remove" aria-label="Remove headset">&times;</button>
+      </div>
+      <input class="text-input hs-label" placeholder="Nickname (optional)" />
+      <select class="select-input hs-icon"></select>
+      <select class="select-input hs-playback"></select>
+      <select class="select-input hs-recording"></select>
+    </div>
+  </template>
+
+  <!-- ============ MAIN SCREEN ============ -->
+  <section id="main-screen" class="screen hidden">
+    <div class="card main-card">
+      <button id="settings-btn" class="icon-btn" title="Change headsets" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+          <path fill="currentColor" d="M19.14 12.94a7.14 7.14 0 0 0 .06-.94 7.14 7.14 0 0 0-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.3 7.3 0 0 0-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.62-.06.94s.02.63.06.94L2.83 14.5a.5.5 0 0 0-.12.64l1.92 3.32c.14.24.42.32.66.22l2.39-.96c.49.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .45-.18.5-.42l.36-2.54c.59-.24 1.13-.55 1.62-.94l2.39.96c.24.1.52.02.66-.22l1.92-3.32a.5.5 0 0 0-.12-.64ZM12 15.5A3.5 3.5 0 1 1 15.5 12 3.5 3.5 0 0 1 12 15.5Z"/>
+        </svg>
+      </button>
+
+      <h1 class="title">Headset Switch</h1>
+
+      <div class="dial-wrap">
+        <button id="dial-btn" class="dial" aria-label="Switch headset">
+          <span id="dial-icon" class="dial-icon">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+              <path d="M12 3a5 5 0 0 0-5 5v4a5 5 0 0 0 10 0V8a5 5 0 0 0-5-5Zm7 9a1 1 0 0 0-1 1 6 6 0 0 1-12 0 1 1 0 1 0-2 0 8 8 0 0 0 7 7.94V22h-2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2h-2v-1.06A8 8 0 0 0 20 13a1 1 0 0 0-1-1Z"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <p id="active-name" class="active-name">—</p>
+      <p id="active-hint" class="hint">Tap the dial to switch</p>
+
+      <div id="pills" class="pills"></div>
+
+      <p id="toast" class="toast hidden"></p>
+    </div>
+  </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

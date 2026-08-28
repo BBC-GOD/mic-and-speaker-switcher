@@ -1,0 +1,379 @@
+:root {
+  --bg: #8F4A48;
+  --bg-highlight: #A6716F;   /* lighter tint of bg, catches the "light" */
+  --bg-shadow: #5A2C2B;      /* darker tint of bg, the recessed side */
+
+  --gold: #FBCA03;
+  --amber: #B97D10;
+  --red: #AA0505;
+
+  --text-primary: #FBF0DA;   /* tint of gold */
+  --text-secondary: #F0D9A6; /* tint of amber */
+  --text-dim: #CFA46B;
+
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --titlebar-h: 34px;
+
+  --shadow-out: 8px 8px 16px var(--bg-shadow), -8px -8px 16px var(--bg-highlight);
+  --shadow-out-sm: 5px 5px 10px var(--bg-shadow), -5px -5px 10px var(--bg-highlight);
+  --shadow-in: inset 5px 5px 10px var(--bg-shadow), inset -5px -5px 10px var(--bg-highlight);
+  --shadow-in-lg: inset 8px 8px 16px var(--bg-shadow), inset -8px -8px 16px var(--bg-highlight);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- custom titlebar (the window is frameless) ---------- */
+.titlebar {
+  height: var(--titlebar-h);
+  min-height: var(--titlebar-h);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 0 14px;
+  background: var(--bg-shadow);
+  -webkit-app-region: drag; /* whole bar drags the window */
+  user-select: none;
+}
+
+.titlebar-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--text-secondary);
+}
+
+.titlebar-btns {
+  display: flex;
+  gap: 2px;
+  -webkit-app-region: no-drag; /* buttons must stay clickable */
+}
+
+.titlebar-btn {
+  width: 32px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.titlebar-btn:hover { background: rgba(0,0,0,0.25); color: var(--gold); }
+.titlebar-btn-close:hover { background: var(--red); color: var(--text-primary); }
+
+.app-content {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  min-height: 0; /* required for a flex child to actually be allowed to scroll */
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* The setup screen's card can outgrow the fixed 380x580 window once more
+   than a couple of headsets are added, so it scrolls internally instead of
+   being clipped or pushing the Save button off-screen. */
+#setup-screen {
+  align-items: stretch;
+}
+
+.card {
+  width: 320px;
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--bg);
+  box-shadow: var(--shadow-out);
+  position: relative;
+}
+
+.setup-card {
+  margin: 14px auto;
+  max-height: calc(100% - 28px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+/* Slim themed scrollbar instead of the default OS one */
+.setup-card::-webkit-scrollbar { width: 8px; }
+.setup-card::-webkit-scrollbar-track { background: transparent; }
+.setup-card::-webkit-scrollbar-thumb {
+  background: var(--bg-shadow);
+  border-radius: 4px;
+}
+
+.main-card { padding-top: 22px; text-align: center; }
+
+.title {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.body-text {
+  margin: 0 0 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+  min-height: 16px;
+  margin: 6px 0 0;
+}
+
+/* ---------- buttons ---------- */
+.btn-raised {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 13px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--bg);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-out-sm);
+  transition: box-shadow 0.15s ease, transform 0.15s ease, color 0.15s ease;
+}
+.btn-raised:active {
+  box-shadow: var(--shadow-in);
+  transform: translateY(1px);
+}
+.btn-primary { color: var(--gold); }
+
+.icon-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-out-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, color 0.15s ease;
+}
+.icon-btn:hover { color: var(--gold); }
+.icon-btn:active { box-shadow: var(--shadow-in); }
+
+/* ---------- setup form ---------- */
+.headset-list { margin-bottom: 14px; }
+.headset-block {
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+.headset-block:last-child { border-bottom: none; }
+
+.block-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.block-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.block-label .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex: none;
+}
+/* Cycle a few dot colors so headsets are visually distinguishable */
+.headset-block:nth-child(2n) .dot { background: var(--amber); }
+.headset-block:nth-child(3n) .dot { background: var(--gold); }
+
+.remove-headset-btn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text-dim);
+  box-shadow: var(--shadow-out-sm);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.remove-headset-btn:hover { color: var(--red); }
+.remove-headset-btn:active { box-shadow: var(--shadow-in); }
+.remove-headset-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  color: var(--text-dim);
+}
+
+.text-input, .select-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: var(--radius-sm);
+  padding: 11px 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  background: var(--bg);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-in);
+  appearance: none;
+}
+.select-input { color: var(--text-secondary); }
+.text-input::placeholder { color: var(--text-dim); }
+
+#add-headset-btn { margin-bottom: 10px; }
+
+/* ---------- dial (signature element) ---------- */
+.dial-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 16px;
+}
+
+/* Outer button: owns the neomorphic shadow ONLY. It never transforms,
+   so the shadow (which is fixed to a light source) never rotates. */
+.dial {
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: radial-gradient(circle at 32% 28%, var(--bg-highlight), var(--bg) 70%);
+  box-shadow: var(--shadow-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 0.2s ease;
+}
+
+.dial:active {
+  box-shadow: var(--shadow-in-lg);
+}
+
+.dial.switching {
+  box-shadow: var(--shadow-out), 0 0 22px rgba(251, 202, 3, 0.35);
+}
+
+/* Inner icon: owns the rotation + color change. Nothing here has a
+   shadow, so spinning it never drags a shadow along with it. */
+.dial-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: transform 0.45s cubic-bezier(.2,.8,.3,1.15), color 0.3s ease;
+}
+
+.dial-icon.spin {
+  transform: rotate(200deg);
+  color: var(--gold);
+}
+
+.active-name {
+  margin: 4px 0 2px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-height: 20px;
+}
+
+.pills {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text-dim);
+  box-shadow: var(--shadow-out-sm);
+  transition: box-shadow 0.2s ease, color 0.2s ease;
+}
+.pill svg { display: block; }
+
+.pill.active {
+  box-shadow: var(--shadow-in);
+  color: var(--gold);
+}
+
+.pill.missing {
+  color: var(--red);
+}
+
+.toast {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  background: var(--bg);
+  box-shadow: var(--shadow-in);
+  color: var(--gold);
+}
+.toast.error { color: var(--red); }
